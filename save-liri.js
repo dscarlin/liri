@@ -132,10 +132,13 @@ if (searchCommand == 'do-what-it-says'){
             console.log(error);
             return;
         };
-        let inputArr = data.split(",")
-        let searchType = inputArr[0]
-        let searchQuery = inputArr[1]
-        queryLIRI(searchType,searchQuery)
+        let inputArr = data.split(",");
+        console.log(inputArr);
+        for (let i=1; i < inputArr.length; i = i+2){
+            let searchType = inputArr[i-1]
+            let searchQuery = inputArr[i]
+            queryLIRI(searchType,searchQuery)
+        }
     })
 }
 else{

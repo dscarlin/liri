@@ -123,8 +123,6 @@ if (searchCommand == 'do-what-it-says'){
             let searchQuery = inputArr[i]
             queryLIRI(searchType,searchQuery)
         }
-
-      
     })
 }
 else{
