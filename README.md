@@ -54,7 +54,7 @@
             node liri.js concert-this green day
             node liri.js spotify-this-song your song
 
-![tron search result](/images/movieAndSpotify.png)
+![tron search result](/Images/movieAndSpotify.png)
    
 #####note: 
 - parameters entered at the command line can
@@ -63,14 +63,14 @@
 ### example 2: 
     node liri.js concert-this victor wooten
 
- ![victor wooten search result](/images/concert-this.png)
+ ![victor wooten search result](/Images/concert-this.png)
 
 ### example 3:
     node liri.js do-what-it-says
 - in this example the file random.txt contains:
                 spotify-this-song,"I Want it That Way"
 
-![do-what-it-says command result](/images/do-what-it-says.png)
+![do-what-it-says command result](/Images/do-what-it-says.png)
 
 - this file can contain multiple commands in the format:
 
