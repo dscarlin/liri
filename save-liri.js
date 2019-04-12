@@ -9,7 +9,6 @@ const inputArr = process.argv;
 const searchCommand = inputArr[2]
 const searchItem = inputArr.slice(3).join(" ")
 
-
 function queryLIRI(command,query){
     if (command == 'concert-this')
         findConcert(query)   
@@ -35,17 +34,19 @@ function searchSpotify(songTitle){
         let result = ""
         response.tracks.items.forEach(function(item){
             item.preview_url = (item.preview_url) ? item.preview_url : "Not Available";
-            let message =   "\r\n\u001b[1;36m Track Name:\r\n   \u001b[0m" + item.name +
-                            "\r\n\u001b[1;36m Artists:"
+            let message =   "\r\n Track Name:\r\n   " + item.name +
+                            "\r\n Artists:"
            
             item.artists.forEach(function(artist){
-                message +=  "\r\n   \u001b[0m"+ artist.name
+                message +=  "\r\n   "+ artist.name
             })
-            message +=      "\r\n\u001b[1;36m Preview:\r\n   \u001b[0m" + item.preview_url +
-                            "\r\n\u001b[1;36m Album:\r\n   \u001b[0m" + item.album.name + "\r\n"
+            message +=      "\r\n Preview:\r\n   " + item.preview_url +
+                            "\r\n Album:\r\n   " + item.album.name + "\r\n"
             result += message
         })
-        console.log(result)
+        // console.log(result) 
+        result += "\r\n\r\n\r\n"
+        writeToFile(searchCommand, songTitle, result)
         if(response.tracks.items.length < 1){
            searchSpotify('The Sign Ace of Base')
         }
@@ -64,16 +65,18 @@ function findConcert(artist){
             resp.data.forEach(function(item){
                 let venue = item.venue;
                 let date = moment(item.datetime, 'YYYY-MM-DDThh:mm:ss').format('MMMM Do YYYY, h:mma');
-                let message =   "\r\n\u001b[1;36m Location: " + item.venue.city + ", " + item.venue.country +
-                                "\r\n\u001b[0m   Venue: " + venue.name +
-                                "\r\n\u001b[0m   Date: " + date + "\r\n";
+                let message =   "\r\n Location: " + item.venue.city + ", " + item.venue.country +
+                                "\r\n   Venue: " + venue.name +
+                                "\r\n   Date: " + date + "\r\n";
                 result += message
                 
             })
-            console.log(result);
+            // console.log(result);
+            result += "\r\n\r\n\r\n"
+            writeToFile(searchCommand, artist, result);
         }
         else
-        console.log('\u001b[33mSorry, the search did not return any results.\u001b[0m')
+            console.log('\u001b[33mSorry, the search did not return any results.\u001b[0m')
     })
     .catch(function(err){
         // console.log(err);
@@ -93,15 +96,16 @@ function movieThis(movie){
             return;
         }
         else{
-        let message =   "\r\n\u001b[1;36mTitle: \r\n\u001b[0m    " + response.data.Title +
-                        "\r\n\u001b[1;36mYear: \r\n\u001b[0m    " + response.data.Year +
-                        "\r\n\u001b[1;36mIMDB Rating: \r\n\u001b[0m    " + response.data.imdbRating +
-                        "\r\n\u001b[1;36mRotten Tomatoes Rating: \r\n\u001b[0m    " + response.data.Ratings[1].Value +
-                        "\r\n\u001b[1;36mCountry of production: \r\n\u001b[0m    " + response.data.Country + 
-                        "\r\n\u001b[1;36mLanguage: \r\n\u001b[0m    " + response.data.Language +
-                        "\r\n\u001b[1;36mPlot: \r\n\u001b[0m    " + response.data.Plot + 
-                        "\r\n\u001b[1;36mActors: \r\n\u001b[0m    " + response.data.Actors + "\r\n\r\n\r\n";
-        console.log(message);
+        let message =   "\r\nTitle: \r\n    " + response.data.Title +
+                        "\r\nYear: \r\n    " + response.data.Year +
+                        "\r\nIMDB Rating: \r\n    " + response.data.imdbRating +
+                        "\r\nRotten Tomatoes Rating: \r\n    " + response.data.Ratings[1].Value +
+                        "\r\nCountry of production: \r\n    " + response.data.Country + 
+                        "\r\nLanguage: \r\n    " + response.data.Language +
+                        "\r\nPlot: \r\n    " + response.data.Plot + 
+                        "\r\nActors: \r\n    " + response.data.Actors + "\r\n\r\n\r\n";
+        // console.log(message);
+        writeToFile(searchCommand, movie, message);
         };
     })
     .catch(function(err){
@@ -109,6 +113,18 @@ function movieThis(movie){
     });
 };
 
+function writeToFile(searchType, query, data){
+    let text =  searchType + " - " +
+                query + "\r\n" +
+                data;
+
+    fs.appendFile("searchResults.txt", text, function(err){
+        if(err)
+            console.log('\u001b[1;31mOops, your data was not logged to the searchResults.txt file!\u001b[0m');
+        else
+            console.log('\u001b[1;32mYour results have been added to the searchResults.txt file!\u001b[0m');
+    })
+}
 
 if (searchCommand == 'do-what-it-says'){
     fs.readFile('random.txt','utf8',function(error,data){
@@ -116,15 +132,10 @@ if (searchCommand == 'do-what-it-says'){
             console.log(error);
             return;
         };
-        let inputArr = data.split(",");
-        console.log(inputArr);
-        for (let i=1; i < inputArr.length; i = i+2){
-            let searchType = inputArr[i-1]
-            let searchQuery = inputArr[i]
-            queryLIRI(searchType,searchQuery)
-        }
-
-      
+        let inputArr = data.split(",")
+        let searchType = inputArr[0]
+        let searchQuery = inputArr[1]
+        queryLIRI(searchType,searchQuery)
     })
 }
 else{
