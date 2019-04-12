@@ -56,7 +56,7 @@
 
 ![tron search result](/Images/movieAndSpotify.png)
    
-#####note: 
+##### note: 
 - parameters entered at the command line can
                    be wrapped in quotes or entered without quotes
 
@@ -68,7 +68,8 @@
 ### example 3:
     node liri.js do-what-it-says
 - in this example the file random.txt contains:
-                spotify-this-song,"I Want it That Way"
+           
+        spotify-this-song,"I Want it That Way"
 
 ![do-what-it-says command result](/Images/do-what-it-says.png)
 
@@ -79,7 +80,7 @@
                                            
 
 
-#####note: 
+##### note: 
 
 - this format requires no spaces or new lines 
 
