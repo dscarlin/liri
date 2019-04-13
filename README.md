@@ -76,17 +76,19 @@
 - this file can contain multiple commands in the format:
 
 
-        spotify-this-song,"I Want it That Way",concert-this,victor wooten,movie-this,"tron" 
+        spotify-this-song,"I Want it That Way", 
+        
+        concert-this,victor wooten,
+        
+        movie-this,"tron", 
                                            
 
 
 ##### note: 
 
-- this format requires no spaces or new lines 
+- there must be a comma after each command AND each parameter
+- each command / parameter pair CAN be on a new line but do not have to be
 
-- parameters for concert-this must not be wrapped in quotes
-                  
-- there must be no comma at the end of the string
 
 ## Contributions:
 1. Fork it
