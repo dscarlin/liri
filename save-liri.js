@@ -132,12 +132,17 @@ if (searchCommand == 'do-what-it-says'){
             console.log(error);
             return;
         };
-        let inputArr = data.split(",");
-        console.log(inputArr);
+        let newData = data.split('"').join('');
+        let inputArr = newData.split(",");
+        inputArr = inputArr.map(function(item) {
+            return item.replace(/\n/g,'');
+          });
         for (let i=1; i < inputArr.length; i = i+2){
             let searchType = inputArr[i-1]
             let searchQuery = inputArr[i]
-            queryLIRI(searchType,searchQuery)
+            // console.log(inputArr[i-1])
+            // console.log(inputArr[i])
+            queryLIRI(searchType,searchQuery);
         }
     })
 }

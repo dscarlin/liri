@@ -9,8 +9,9 @@ const inputArr = process.argv;
 const searchCommand = inputArr[2]
 const searchItem = inputArr.slice(3).join(" ")
 
-
 function queryLIRI(command,query){
+    command = command.trim();
+    query = query.trim();
     if (command == 'concert-this')
         findConcert(query)   
     else if (command == 'spotify-this-song')
@@ -56,6 +57,9 @@ function searchSpotify(songTitle){
 }
 
 function findConcert(artist){
+    let regex = /\":"\':'/gi
+    
+    console.log("artist" + artist)
     axios
     .get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
     .then(function(resp){
@@ -83,6 +87,7 @@ function findConcert(artist){
 };
 
 function movieThis(movie){
+    console.log('movie' + movie)
     var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
     axios
     .get(queryUrl)
@@ -116,12 +121,17 @@ if (searchCommand == 'do-what-it-says'){
             console.log(error);
             return;
         };
-        let inputArr = data.split(",");
-        console.log(inputArr);
+        let newData = data.split('"').join('');
+        let inputArr = newData.split(",");
+        inputArr = inputArr.map(function(item) {
+            return item.replace(/\n/g,'');
+          });
         for (let i=1; i < inputArr.length; i = i+2){
             let searchType = inputArr[i-1]
             let searchQuery = inputArr[i]
-            queryLIRI(searchType,searchQuery)
+            // console.log(inputArr[i-1])
+            // console.log(inputArr[i])
+            queryLIRI(searchType,searchQuery);
         }
     })
 }
