@@ -10,6 +10,7 @@ const searchCommand = inputArr[2]
 const searchItem = inputArr.slice(3).join(" ")
 
 function queryLIRI(command,query){
+    command = command.trim();
     if (command == 'concert-this')
         findConcert(query)   
     else if (command == 'spotify-this-song')
@@ -140,8 +141,6 @@ if (searchCommand == 'do-what-it-says'){
         for (let i=1; i < inputArr.length; i = i+2){
             let searchType = inputArr[i-1]
             let searchQuery = inputArr[i]
-            // console.log(inputArr[i-1])
-            // console.log(inputArr[i])
             queryLIRI(searchType,searchQuery);
         }
     })
